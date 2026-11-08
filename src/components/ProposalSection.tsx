@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
-import { Heart, Sparkles, RotateCcw, Send } from 'lucide-react';
+import { Heart, Sparkles, RotateCcw, Send, Download } from 'lucide-react';
 import { recordProposalResponse } from '../firebase/services';
+import { generateKeepsakeCard } from '../utils/generateKeepsakeCard';
 
 interface ProposalSectionProps {
   prelude?: string;
@@ -233,6 +234,19 @@ export const ProposalSection: React.FC<ProposalSectionProps> = ({
                   </motion.p>
                 )}
               </div>
+
+              {/* Keepsake Postcard for Acceptance */}
+              {response === 'yes' && (
+                <div className="mt-8 flex justify-center">
+                  <button
+                    onClick={() => generateKeepsakeCard("HASEENA", "Naveen")}
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-wine to-champagne/80 hover:from-wine-light hover:to-champagne text-ivory text-xs uppercase tracking-widest font-mono shadow-lg hover:shadow-[0_0_25px_rgba(214,183,121,0.5)] hover:scale-105 active:scale-95 transition-all"
+                  >
+                    <Download className="w-4 h-4 text-champagne" />
+                    <span>Download Keepsake Postcard 💌</span>
+                  </button>
+                </div>
+              )}
 
               {/* Replay Option */}
               <div className="mt-10 pt-6 border-t border-champagne/30 flex justify-center">

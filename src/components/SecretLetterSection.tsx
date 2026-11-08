@@ -70,17 +70,26 @@ export const SecretLetterSection: React.FC<SecretLetterSectionProps> = ({
               {/* Envelope Flap Accent Lines */}
               <div className="absolute inset-x-0 top-0 h-1/2 border-b border-champagne/20 bg-wine/20 pointer-events-none rounded-t-2xl" />
 
-              {/* Gold Wax Seal with "H" */}
-              <motion.div
-                whileHover={{ scale: 1.12, rotate: 5 }}
-                whileTap={{ scale: 0.95 }}
-                className="relative z-10 w-24 h-24 rounded-full bg-gradient-to-tr from-wine via-wine-light to-champagne p-[2px] shadow-[0_10px_25px_rgba(0,0,0,0.6)] flex items-center justify-center"
-              >
-                <div className="w-full h-full rounded-full bg-burgundy-900 flex flex-col items-center justify-center border border-champagne/60">
-                  <span className="font-serif text-3xl font-bold text-champagne drop-shadow">H</span>
-                  <span className="text-[9px] tracking-widest uppercase text-champagne/80 font-mono mt-0.5">SEAL</span>
-                </div>
-              </motion.div>
+              {/* Gold Wax Seal with "H" & Pulsing Ripple Aura */}
+              <div className="relative z-10 flex items-center justify-center">
+                {/* Ambient Ripple Wave */}
+                <motion.div
+                  animate={{ scale: [1, 1.3, 1], opacity: [0.4, 0.8, 0.4] }}
+                  transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+                  className="absolute w-28 h-28 rounded-full border border-champagne/50 pointer-events-none"
+                />
+
+                <motion.div
+                  whileHover={{ scale: 1.15, rotate: 6 }}
+                  whileTap={{ scale: 0.92 }}
+                  className="relative w-24 h-24 rounded-full bg-gradient-to-tr from-wine via-wine-light to-champagne p-[2px] shadow-[0_10px_25px_rgba(0,0,0,0.6)] flex items-center justify-center cursor-pointer group-hover:shadow-[0_0_30px_rgba(214,183,121,0.6)] transition-shadow"
+                >
+                  <div className="w-full h-full rounded-full bg-burgundy-900 flex flex-col items-center justify-center border border-champagne/60">
+                    <span className="font-serif text-3xl font-bold text-champagne drop-shadow-[0_2px_8px_rgba(214,183,121,0.8)]">H</span>
+                    <span className="text-[9px] tracking-widest uppercase text-champagne/90 font-mono mt-0.5">SEAL</span>
+                  </div>
+                </motion.div>
+              </div>
 
               {/* Envelope Text */}
               <div className="relative z-10 mt-6">

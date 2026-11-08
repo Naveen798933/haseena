@@ -47,8 +47,14 @@ export const StorySection: React.FC<StorySectionProps> = ({
       {/* Story Timeline Spine & Sentences */}
       <div className="relative">
         
-        {/* Central Vertical Golden Line */}
-        <div className="absolute top-4 bottom-8 left-6 sm:left-1/2 -translate-x-1/2 w-[1px] bg-gradient-to-b from-champagne/10 via-champagne/50 to-transparent pointer-events-none" />
+        {/* Central Vertical Golden Line & Traveling Light Beam */}
+        <div className="absolute top-4 bottom-8 left-6 sm:left-1/2 -translate-x-1/2 w-[1px] bg-gradient-to-b from-champagne/10 via-champagne/50 to-transparent pointer-events-none">
+          <motion.div
+            animate={{ top: ['0%', '100%'] }}
+            transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
+            className="absolute -left-[3px] w-[7px] h-20 rounded-full bg-gradient-to-b from-transparent via-champagne to-transparent blur-[2px]"
+          />
+        </div>
 
         <div className="space-y-20 sm:space-y-28">
           {sentences.map((sentence, idx) => {

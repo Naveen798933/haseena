@@ -25,6 +25,18 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] rounded-full bg-wine/30 blur-[140px] pointer-events-none" />
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] rounded-full bg-champagne/10 blur-[100px] pointer-events-none" />
 
+      {/* Rotating Stardust Halo */}
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ duration: 75, repeat: Infinity, ease: 'linear' }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[580px] h-[580px] rounded-full border border-dashed border-champagne/20 pointer-events-none"
+      />
+      <motion.div
+        animate={{ rotate: -360 }}
+        transition={{ duration: 90, repeat: Infinity, ease: 'linear' }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] h-[420px] rounded-full border border-champagne/10 pointer-events-none"
+      />
+
       <motion.div
         style={{ y: yParallax, opacity: opacityParallax }}
         className="relative z-10 max-w-4xl mx-auto flex flex-col items-center"

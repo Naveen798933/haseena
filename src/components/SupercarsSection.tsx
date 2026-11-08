@@ -234,3 +234,4 @@ export const SupercarsSection: React.FC<SupercarsSectionProps> = ({ supercars = 
     </section>
   );
 };
+

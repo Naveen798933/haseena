@@ -14,6 +14,7 @@ import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { AudioPlayer } from './components/AudioPlayer';
 import { PetalCanvas } from './components/PetalCanvas';
+import { ClickHeartParticles } from './components/ClickHeartParticles';
 import { CustomCursor } from './components/CustomCursor';
 import { AdminLoginModal } from './components/admin/AdminLoginModal';
 import { AdminDashboard } from './components/admin/AdminDashboard';
@@ -99,6 +100,9 @@ export const App: React.FC = () => {
       
       {/* Rose Petal & Golden Dust Particle Simulation */}
       <PetalCanvas density={content.theme?.petalCount || 28} />
+
+      {/* Interactive Tap & Click Golden Stars & Rose Hearts */}
+      <ClickHeartParticles />
 
       {/* Desktop Luxury Custom Cursor */}
       <CustomCursor />

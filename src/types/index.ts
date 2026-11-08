@@ -6,6 +6,15 @@ export interface PhotoItem {
   order: number;
 }
 
+export interface SupercarItem {
+  id: string;
+  name: string;
+  tagline: string;
+  description: string;
+  imageUrl: string;
+  accent: string;
+}
+
 export interface ProposalResponseRecord {
   choice: 'yes' | 'need_time';
   timestamp: string;
@@ -46,6 +55,7 @@ export interface SiteContent {
     noResponse: string;
   };
   photos: PhotoItem[];
+  supercars?: SupercarItem[];
   audio: {
     enabled: boolean;
     musicUrl: string;

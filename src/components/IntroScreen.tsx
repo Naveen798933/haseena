@@ -7,14 +7,35 @@ interface IntroScreenProps {
   quoteLine1?: string;
   quoteLine2?: string;
   buttonText?: string;
+  preloadUrls?: string[];
 }
 
 export const IntroScreen: React.FC<IntroScreenProps> = ({
   onEnter,
   quoteLine1 = "Some people enter our lives unexpectedly...",
   quoteLine2 = "Somehow, they make ordinary moments feel extraordinary.",
-  buttonText = "ENTER MY LITTLE WORLD"
+  buttonText = "ENTER MY LITTLE WORLD",
+  preloadUrls = []
 }) => {
+  React.useEffect(() => {
+    if (preloadUrls && preloadUrls.length > 0) {
+      preloadUrls.forEach((url) => {
+        if (url) {
+          const img = new Image();
+          img.src = url;
+        }
+      });
+    }
+  }, [preloadUrls]);
+
+  const handleEnterClick = () => {
+    if ('vibrate' in navigator) {
+      try {
+        navigator.vibrate(30);
+      } catch {}
+    }
+    onEnter();
+  };
   return (
     <motion.div
       initial={{ opacity: 1 }}

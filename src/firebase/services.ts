@@ -58,6 +58,9 @@ export async function getSiteContent(): Promise<SiteContent> {
         parsed.photos = DEFAULT_CONTENT.photos;
         localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...parsed, photos: DEFAULT_CONTENT.photos }));
       }
+      if (!parsed.supercars || !Array.isArray(parsed.supercars) || parsed.supercars.length === 0) {
+        parsed.supercars = DEFAULT_CONTENT.supercars;
+      }
       return { ...DEFAULT_CONTENT, ...parsed };
     }
   } catch (e) {

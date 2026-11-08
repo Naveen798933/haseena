@@ -167,6 +167,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             </button>
 
             <button
+              onClick={handleCopyWebsiteLink}
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-burgundy-900 border border-champagne/30 text-champagne hover:bg-wine/40 text-xs uppercase tracking-wider font-mono transition-all"
+              title="Copy shareable link for Haseena"
+            >
+              {copiedLink ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+              <span>{copiedLink ? 'Link Copied!' : 'Copy Link'}</span>
+            </button>
+
+            <button
               onClick={onClose}
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-burgundy-900 border border-champagne/30 text-champagne hover:bg-wine/40 text-xs uppercase tracking-wider font-mono transition-all"
               title="Return to website view"
@@ -228,9 +237,29 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       Haseena&apos;s Proposal Responses
                     </h3>
                   </div>
-                  <span className="px-3 py-1 rounded-full bg-burgundy-950 border border-champagne/30 text-champagne text-xs font-mono">
-                    {responses.length} recorded
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="px-3 py-1 rounded-full bg-burgundy-950 border border-champagne/30 text-champagne text-xs font-mono">
+                      {responses.length} recorded
+                    </span>
+                    {responses.length > 0 && (
+                      <>
+                        <button
+                          onClick={handleExportResponses}
+                          className="p-1.5 rounded-lg bg-burgundy-950 border border-champagne/30 text-champagne hover:bg-wine/40 transition-colors"
+                          title="Export Responses to JSON"
+                        >
+                          <Download className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          onClick={handleClearResponses}
+                          className="p-1.5 rounded-lg bg-burgundy-950 border border-rose-500/30 text-rose-300 hover:bg-rose-900/40 transition-colors"
+                          title="Clear test responses"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </>
+                    )}
+                  </div>
                 </div>
 
                 {responses.length === 0 ? (

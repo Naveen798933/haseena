@@ -6,6 +6,7 @@ import { getSiteContent, subscribeToAuthState } from './firebase/services';
 import { IntroScreen } from './components/IntroScreen';
 import { HeroSection } from './components/HeroSection';
 import { GallerySection } from './components/GallerySection';
+import { SupercarsSection } from './components/SupercarsSection';
 import { StorySection } from './components/StorySection';
 import { SecretLetterSection } from './components/SecretLetterSection';
 import { ProposalSection } from './components/ProposalSection';
@@ -110,6 +111,10 @@ export const App: React.FC = () => {
             quoteLine1={content.intro.quoteLine1}
             quoteLine2={content.intro.quoteLine2}
             buttonText={content.intro.buttonText}
+            preloadUrls={[
+              ...content.photos.map((p) => p.url),
+              ...(content.supercars?.map((c) => c.imageUrl) || [])
+            ]}
           />
         )}
       </AnimatePresence>
@@ -130,6 +135,11 @@ export const App: React.FC = () => {
         {/* Six Personal Photographs Gallery */}
         <GallerySection
           photos={content.photos}
+        />
+
+        {/* Dreams & Midnight Drives Supercars Showcase */}
+        <SupercarsSection
+          supercars={content.supercars}
         />
 
         {/* Our Little Story Timeline */}

@@ -89,6 +89,56 @@ export const DEFAULT_CONTENT: SiteContent = {
       url: "/photos/haseena_6.jpeg"
     }
   ],
+  supercars: [
+    {
+      id: "car-1",
+      name: "Ferrari F8 Tributo",
+      tagline: "Rosso Corsa • Coastal Sunset Drives",
+      description: "Chasing horizons together with windows down, ocean breeze, and our favorite songs on repeat.",
+      imageUrl: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?q=80&w=1200&auto=format&fit=crop",
+      accent: "#e53e3e"
+    },
+    {
+      id: "car-2",
+      name: "Porsche 911 GT3",
+      tagline: "Golden Hour • Timeless Perfection",
+      description: "Unmatched curves, precision engineering, and the thrill of open mountain highways.",
+      imageUrl: "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?q=80&w=1200&auto=format&fit=crop",
+      accent: "#D6B779"
+    },
+    {
+      id: "car-3",
+      name: "Lamborghini Huracán",
+      tagline: "Midnight Velvet • Bold & Fearless",
+      description: "For the big dreams, late-night city skylines, and living life passionately without limits.",
+      imageUrl: "https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?q=80&w=1200&auto=format&fit=crop",
+      accent: "#caa05d"
+    },
+    {
+      id: "car-4",
+      name: "Aston Martin DBS",
+      tagline: "Wine Burgundy • Pure Editorial Royalty",
+      description: "Elegance defined. A masterpiece designed for unforgettable grand tours and scenic getaways.",
+      imageUrl: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?q=80&w=1200&auto=format&fit=crop",
+      accent: "#64152D"
+    },
+    {
+      id: "car-5",
+      name: "McLaren 720S",
+      tagline: "Aerodynamic Wonder • Pure Speed",
+      description: "Dihedral doors opening to starry nights and the thrill of spontaneous adventures.",
+      imageUrl: "https://images.unsplash.com/photo-1621135802920-133df287f89c?q=80&w=1200&auto=format&fit=crop",
+      accent: "#f56565"
+    },
+    {
+      id: "car-6",
+      name: "Rolls-Royce Spectre",
+      tagline: "Starlight Cabin • Cloud Nine Luxury",
+      description: "Whisper-quiet cruising beneath a ceiling of stars, sharing conversations that last until dawn.",
+      imageUrl: "https://images.unsplash.com/photo-1631295868223-63265b40d9e4?q=80&w=1200&auto=format&fit=crop",
+      accent: "#eedfbc"
+    }
+  ],
   audio: {
     enabled: true,
     musicUrl: "", // Built-in Web Audio romantic piano nocturne plays automatically

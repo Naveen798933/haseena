@@ -144,14 +144,21 @@ export const SecretLetterSection: React.FC<SecretLetterSectionProps> = ({
                 </p>
               </div>
 
-              {/* Re-fold Button */}
-              <div className="relative z-10 mt-8 pt-6 border-t border-champagne/40 flex justify-center">
+              {/* Action Buttons */}
+              <div className="relative z-10 mt-8 pt-6 border-t border-champagne/40 flex flex-wrap items-center justify-center gap-3">
+                <button
+                  onClick={() => window.print()}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-champagne/20 hover:bg-champagne/30 text-wine text-xs uppercase tracking-widest font-mono transition-colors"
+                >
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>Save As Keepsake</span>
+                </button>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-burgundy/10 hover:bg-burgundy/20 text-wine text-xs uppercase tracking-widest font-mono transition-colors"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-burgundy/10 hover:bg-burgundy/20 text-wine text-xs uppercase tracking-widest font-mono transition-colors"
                 >
                   <RefreshCw className="w-3.5 h-3.5" />
-                  Fold Back Into Envelope
+                  <span>Fold Back</span>
                 </button>
               </div>
 

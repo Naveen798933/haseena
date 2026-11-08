@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Mail, Heart, RefreshCw } from 'lucide-react';
+import { romanticSounds } from '../utils/romanticSounds';
 
 interface SecretLetterSectionProps {
   badge?: string;
@@ -20,6 +21,16 @@ export const SecretLetterSection: React.FC<SecretLetterSectionProps> = ({
   sender = "Yours sincerely"
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const handleOpenEnvelope = () => {
+    romanticSounds.playWaxSealSound();
+    if ('vibrate' in navigator) {
+      try {
+        navigator.vibrate([25, 30, 45]);
+      } catch {}
+    }
+    setIsOpen(true);
+  };
 
   return (
     <section id="letter" className="relative py-32 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
@@ -64,7 +75,7 @@ export const SecretLetterSection: React.FC<SecretLetterSectionProps> = ({
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95, y: -20 }}
               transition={{ duration: 0.5 }}
-              onClick={() => setIsOpen(true)}
+              onClick={handleOpenEnvelope}
               className="cursor-pointer group relative w-full aspect-[16/10] max-w-lg rounded-2xl bg-gradient-to-br from-wine-dark via-burgundy to-burgundy-950 border-2 border-champagne/40 p-8 shadow-[0_25px_60px_rgba(0,0,0,0.8)] hover:border-champagne hover:shadow-[0_0_40px_rgba(214,183,121,0.35)] transition-all duration-500 flex flex-col items-center justify-center text-center"
             >
               {/* Envelope Flap Accent Lines */}

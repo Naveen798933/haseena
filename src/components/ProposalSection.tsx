@@ -4,6 +4,7 @@ import confetti from 'canvas-confetti';
 import { Heart, Sparkles, RotateCcw, Send, Download } from 'lucide-react';
 import { recordProposalResponse } from '../firebase/services';
 import { generateKeepsakeCard } from '../utils/generateKeepsakeCard';
+import { romanticSounds } from '../utils/romanticSounds';
 
 interface ProposalSectionProps {
   prelude?: string;
@@ -52,6 +53,12 @@ export const ProposalSection: React.FC<ProposalSectionProps> = ({
   const handleSelectYes = () => {
     setResponse('yes');
     fireRomanticConfetti();
+    romanticSounds.playProposalJoyChime();
+    if ('vibrate' in navigator) {
+      try {
+        navigator.vibrate([40, 30, 50, 40, 80]);
+      } catch {}
+    }
     recordProposalResponse('yes');
   };
 

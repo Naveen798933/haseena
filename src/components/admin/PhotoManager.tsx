@@ -23,7 +23,7 @@ export const PhotoManager: React.FC<PhotoManagerProps> = ({ photos, onChange }) 
       order: nextIdx,
       caption: `0${nextIdx} — A beautiful moment.`,
       subtitle: 'Cherished memories',
-      url: DEFAULT_CONTENT.photos[nextIdx - 1]?.url || 'https://images.unsplash.com/photo-1518895949257-7621c3c786d7?q=80&w=1200&auto=format&fit=crop'
+      url: DEFAULT_CONTENT.photos[nextIdx - 1]?.url || `/photos/haseena_${nextIdx}.jpeg`
     });
   }
 
@@ -88,9 +88,9 @@ export const PhotoManager: React.FC<PhotoManagerProps> = ({ photos, onChange }) 
   };
 
   const handleResetToPlaceholders = () => {
-    if (confirm("Reset all 6 slots to the elegant default aesthetic placeholders?")) {
+    if (confirm("Reset all 6 slots to the original Haseena photographs?")) {
       onChange(DEFAULT_CONTENT.photos);
-      setStatusMessage("Reset to default placeholders.");
+      setStatusMessage("Reset to original photographs.");
       setTimeout(() => setStatusMessage(null), 3000);
     }
   };
@@ -113,7 +113,7 @@ export const PhotoManager: React.FC<PhotoManagerProps> = ({ photos, onChange }) 
           className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-burgundy-900 border border-champagne/30 text-champagne hover:bg-wine/40 text-xs uppercase tracking-wider font-mono transition-all"
         >
           <RefreshCw className="w-3.5 h-3.5" />
-          Reset to Placeholders
+          Reset to Original Photos
         </button>
       </div>
 
@@ -253,3 +253,4 @@ export const PhotoManager: React.FC<PhotoManagerProps> = ({ photos, onChange }) 
     </div>
   );
 };
+

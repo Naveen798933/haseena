@@ -186,3 +186,4 @@ export const PetalCanvas: React.FC<PetalCanvasProps> = ({ density = 30 }) => {
     />
   );
 };
+

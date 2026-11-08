@@ -6,6 +6,13 @@ export interface PhotoItem {
   order: number;
 }
 
+export interface ProposalResponseRecord {
+  choice: 'yes' | 'need_time';
+  timestamp: string;
+  formattedDate?: string;
+  note?: string;
+}
+
 export interface SiteContent {
   general: {
     websiteTitle: string;
@@ -53,13 +60,11 @@ export interface SiteContent {
     ivory: string;
     petalCount: number;
   };
-  proposalResponses?: {
-    choice: 'yes' | 'need_time';
-    timestamp: string;
-  }[];
+  proposalResponses?: ProposalResponseRecord[];
 }
 
 export interface AdminUser {
   email: string;
   uid: string;
 }
+

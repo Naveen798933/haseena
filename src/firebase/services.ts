@@ -18,7 +18,7 @@ import {
   getDownloadURL
 } from 'firebase/storage';
 import { auth, db, storage, isFirebaseConfigured } from './config';
-import { SiteContent, AdminUser } from '../types';
+import { SiteContent, AdminUser, ProposalResponseRecord } from '../types';
 import { DEFAULT_CONTENT } from '../data/defaultContent';
 
 const STORAGE_KEY = 'haseena_site_content_v1';
@@ -49,6 +49,15 @@ export async function getSiteContent(): Promise<SiteContent> {
     const local = localStorage.getItem(STORAGE_KEY);
     if (local) {
       const parsed = JSON.parse(local);
+      // Auto-migrate if photos still contain placeholder unsplash links
+      if (
+        parsed.photos &&
+        Array.isArray(parsed.photos) &&
+        parsed.photos.some((p: { url?: string }) => p.url && p.url.includes('unsplash.com'))
+      ) {
+        parsed.photos = DEFAULT_CONTENT.photos;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...parsed, photos: DEFAULT_CONTENT.photos }));
+      }
       return { ...DEFAULT_CONTENT, ...parsed };
     }
   } catch (e) {
@@ -175,17 +184,25 @@ export async function uploadMusic(
 /**
  * Record Haseena's response to the proposal
  */
-export async function recordProposalResponse(choice: 'yes' | 'need_time'): Promise<void> {
-  const record = {
+export async function recordProposalResponse(
+  choice: 'yes' | 'need_time',
+  note?: string
+): Promise<void> {
+  const record: ProposalResponseRecord = {
     choice,
+    note: note || '',
     timestamp: new Date().toISOString(),
     formattedDate: new Date().toLocaleString()
   };
 
   // Save to local storage
   try {
-    const existing = JSON.parse(localStorage.getItem(RESPONSES_KEY) || '[]');
-    existing.unshift(record);
+    const existing: ProposalResponseRecord[] = JSON.parse(localStorage.getItem(RESPONSES_KEY) || '[]');
+    if (existing.length > 0 && !existing[0].note && note) {
+      existing[0].note = note;
+    } else {
+      existing.unshift(record);
+    }
     localStorage.setItem(RESPONSES_KEY, JSON.stringify(existing));
   } catch (e) {
     console.error("Error saving local response:", e);
@@ -207,7 +224,7 @@ export async function recordProposalResponse(choice: 'yes' | 'need_time'): Promi
 /**
  * Get logged proposal responses for the Admin Dashboard
  */
-export async function getProposalResponses(): Promise<{ choice: 'yes' | 'need_time'; timestamp: string; formattedDate?: string }[]> {
+export async function getProposalResponses(): Promise<ProposalResponseRecord[]> {
   try {
     const existing = localStorage.getItem(RESPONSES_KEY);
     return existing ? JSON.parse(existing) : [];
@@ -274,3 +291,4 @@ export function subscribeToAuthState(callback: (user: AdminUser | null) => void)
   window.addEventListener('storage', checkLocal);
   return () => window.removeEventListener('storage', checkLocal);
 }
+

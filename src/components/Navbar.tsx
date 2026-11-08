@@ -134,3 +134,4 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin, title = "A Little W
     </header>
   );
 };
+

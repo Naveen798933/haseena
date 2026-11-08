@@ -97,3 +97,4 @@ export const ThemeSettings: React.FC<ThemeSettingsProps> = ({ theme, onChange })
     </div>
   );
 };
+

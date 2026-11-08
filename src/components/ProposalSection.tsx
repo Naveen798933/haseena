@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
-import { Heart, Sparkles, RotateCcw } from 'lucide-react';
+import { Heart, Sparkles, RotateCcw, Send } from 'lucide-react';
 import { recordProposalResponse } from '../firebase/services';
 
 interface ProposalSectionProps {
@@ -22,6 +22,8 @@ export const ProposalSection: React.FC<ProposalSectionProps> = ({
   noResponse = "Of course. Take all the time you need. Your happiness matters."
 }) => {
   const [response, setResponse] = useState<'yes' | 'need_time' | null>(null);
+  const [userNote, setUserNote] = useState('');
+  const [noteSent, setNoteSent] = useState(false);
 
   const fireRomanticConfetti = () => {
     // Elegant rose & gold champagne confetti cannon
@@ -57,8 +59,16 @@ export const ProposalSection: React.FC<ProposalSectionProps> = ({
     recordProposalResponse('need_time');
   };
 
+  const handleSendNote = () => {
+    if (!userNote.trim() || !response) return;
+    recordProposalResponse(response, userNote.trim());
+    setNoteSent(true);
+  };
+
   const handleReset = () => {
     setResponse(null);
+    setUserNote('');
+    setNoteSent(false);
   };
 
   return (
@@ -187,6 +197,43 @@ export const ProposalSection: React.FC<ProposalSectionProps> = ({
                   : "There is never any rush or pressure. Your happiness and peace mean everything to me."}
               </p>
 
+              {/* Optional note from Haseena */}
+              <div className="mt-8 pt-6 border-t border-champagne/20 max-w-md mx-auto">
+                {!noteSent ? (
+                  <div className="space-y-3">
+                    <label className="block text-xs font-serif text-champagne/90 italic">
+                      Leave a little note for him (optional):
+                    </label>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={userNote}
+                        onChange={(e) => setUserNote(e.target.value)}
+                        placeholder="Write whatever is on your mind..."
+                        className="flex-1 px-4 py-2.5 rounded-xl bg-burgundy-950/80 border border-champagne/30 text-ivory placeholder-champagne/30 text-xs focus:border-champagne focus:outline-none"
+                      />
+                      <button
+                        onClick={handleSendNote}
+                        disabled={!userNote.trim()}
+                        className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-wine to-champagne/80 text-ivory text-xs font-mono uppercase tracking-wider disabled:opacity-40 transition-all hover:scale-105 active:scale-95 flex items-center gap-1.5"
+                      >
+                        <Send className="w-3.5 h-3.5" />
+                        <span>Send</span>
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <motion.p
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-xs text-champagne font-mono flex items-center justify-center gap-1.5"
+                  >
+                    <Heart className="w-3.5 h-3.5 fill-champagne text-champagne" />
+                    <span>Your note has been warmly delivered to him.</span>
+                  </motion.p>
+                )}
+              </div>
+
               {/* Replay Option */}
               <div className="mt-10 pt-6 border-t border-champagne/30 flex justify-center">
                 <button
@@ -205,3 +252,4 @@ export const ProposalSection: React.FC<ProposalSectionProps> = ({
     </section>
   );
 };
+

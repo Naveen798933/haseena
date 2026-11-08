@@ -118,7 +118,7 @@ export const LightboxModal: React.FC<LightboxModalProps> = ({
             <img
               src={currentPhoto.url}
               alt={currentPhoto.caption}
-              className="max-h-[65vh] w-auto object-contain select-none"
+              className="max-h-[70vh] max-w-[85vw] w-auto object-contain select-none"
             />
             {/* Corner filigrees */}
             <div className="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-champagne/80 pointer-events-none" />
@@ -148,3 +148,4 @@ export const LightboxModal: React.FC<LightboxModalProps> = ({
     </AnimatePresence>
   );
 };
+

@@ -39,3 +39,4 @@ if (isFirebaseConfigured) {
 }
 
 export { app, auth, db, storage };
+

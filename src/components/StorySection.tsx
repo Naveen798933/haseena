@@ -114,3 +114,4 @@ export const StorySection: React.FC<StorySectionProps> = ({
     </section>
   );
 };
+

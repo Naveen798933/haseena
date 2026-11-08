@@ -112,3 +112,4 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
     </motion.div>
   );
 };
+

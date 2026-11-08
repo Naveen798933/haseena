@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SiteContent, AdminUser } from '../../types';
+import { SiteContent, AdminUser, ProposalResponseRecord } from '../../types';
 import { saveSiteContent, logoutAdmin, getProposalResponses } from '../../firebase/services';
 import { isFirebaseConfigured } from '../../firebase/config';
 import { PhotoManager } from './PhotoManager';
@@ -43,7 +43,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [activeTab, setActiveTab] = useState<TabType>('overview');
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
-  const [responses, setResponses] = useState<{ choice: 'yes' | 'need_time'; timestamp: string; formattedDate?: string }[]>([]);
+  const [responses, setResponses] = useState<ProposalResponseRecord[]>([]);
 
   useEffect(() => {
     getProposalResponses().then((res) => {
@@ -228,6 +228,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                 ? 'She said: "I\'d love to"'
                                 : 'She said: "I\'d like some time"'}
                             </p>
+                            {res.note && (
+                              <p className="text-sm text-champagne font-serif italic my-1 bg-burgundy-950/60 px-3 py-1.5 rounded-lg border border-champagne/20">
+                                Note from Haseena: &ldquo;{res.note}&rdquo;
+                              </p>
+                            )}
                             <p className="text-xs text-champagne/70 font-mono">
                               {res.formattedDate || new Date(res.timestamp).toLocaleString()}
                             </p>
@@ -376,3 +381,4 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     </div>
   );
 };
+

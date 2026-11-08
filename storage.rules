@@ -1,0 +1,26 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Gallery photos and romantic background music are publicly readable
+    // Only authenticated admin can upload, modify, or delete files
+    match /photos/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null
+                   && request.resource.size < 15 * 1024 * 1024 // 15MB limit
+                   && request.resource.contentType.matches('image/.*');
+    }
+    
+    match /audio/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null
+                   && request.resource.size < 25 * 1024 * 1024 // 25MB limit
+                   && (request.resource.contentType.matches('audio/.*') || request.resource.contentType == 'application/octet-stream');
+    }
+
+    match /{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+  }
+}

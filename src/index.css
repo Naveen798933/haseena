@@ -1,0 +1,126 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --burgundy: #3B0A1E;
+    --wine: #64152D;
+    --champagne: #D6B779;
+    --blush: #F4DCE2;
+    --ivory: #FFF8F0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--burgundy);
+    color: var(--ivory);
+    font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Custom luxury scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #1a040d;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #64152D;
+    border-radius: 9999px;
+    border: 1px solid rgba(214, 183, 121, 0.2);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #D6B779;
+  }
+}
+
+/* Gold foil text shimmer */
+.gold-text-gradient {
+  background: linear-gradient(
+    135deg,
+    #eedfbc 0%,
+    #D6B779 30%,
+    #FFF8F0 50%,
+    #caa05d 70%,
+    #eedfbc 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 6s linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}
+
+/* Ornate gold border styling */
+.gold-border {
+  border: 1px solid rgba(214, 183, 121, 0.35);
+  box-shadow: 0 0 15px rgba(214, 183, 121, 0.08), inset 0 0 15px rgba(214, 183, 121, 0.05);
+}
+
+.gold-glow {
+  box-shadow: 0 0 25px rgba(214, 183, 121, 0.25);
+}
+
+.gold-glow-lg {
+  box-shadow: 0 0 50px rgba(214, 183, 121, 0.35);
+}
+
+/* Paper texture simulation for the secret letter */
+.parchment-bg {
+  background-color: #FFF8F0;
+  background-image: 
+    radial-gradient(#F4DCE2 0.75px, transparent 0.75px),
+    radial-gradient(#D6B779 0.75px, #FFF8F0 0.75px);
+  background-size: 30px 30px;
+  background-position: 0 0, 15px 15px;
+  box-shadow: 
+    0 20px 50px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(214, 183, 121, 0.4),
+    inset 0 0 80px rgba(214, 183, 121, 0.2);
+}
+
+/* Glassmorphism panels */
+.glass-panel {
+  background: rgba(43, 7, 22, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(214, 183, 121, 0.2);
+}
+
+.glass-panel-light {
+  background: rgba(255, 248, 240, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(214, 183, 121, 0.25);
+}
+
+/* Custom romantic cursor dot */
+.custom-cursor {
+  pointer-events: none;
+  position: fixed;
+  z-index: 9999;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s, background-color 0.2s, transform 0.08s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

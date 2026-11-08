@@ -234,6 +234,17 @@ export async function getProposalResponses(): Promise<ProposalResponseRecord[]> 
 }
 
 /**
+ * Clear proposal responses (for resetting tests)
+ */
+export async function clearProposalResponses(): Promise<void> {
+  try {
+    localStorage.removeItem(RESPONSES_KEY);
+  } catch (e) {
+    console.error("Error clearing responses:", e);
+  }
+}
+
+/**
  * Admin Authentication
  */
 export async function loginAdmin(email: string, pass: string): Promise<AdminUser> {

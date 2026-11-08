@@ -35,7 +35,7 @@ export const DEFAULT_CONTENT: SiteContent = {
       "I just wanted to make you smile today."
     ],
     signoff: "With quiet fondness & warmth,",
-    sender: "Yours sincerely"
+    sender: "Naveen"
   },
   proposal: {
     prelude: "Haseena, there's something I've been meaning to tell you...",

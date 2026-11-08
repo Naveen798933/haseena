@@ -28,11 +28,16 @@ export const Footer: React.FC<FooterProps> = ({ onOpenAdmin, targetName = "HASEE
           <p className="text-xs text-champagne/70 font-light mt-1 tracking-widest uppercase">
             Designed to bring a gentle smile to your day
           </p>
+          <div className="mt-3 flex items-center justify-center gap-1.5 text-xs text-champagne/90">
+            <span className="font-serif italic text-ivory/80">Developed with love by</span>
+            <span className="font-serif font-medium text-champagne tracking-wide text-sm">Naveen</span>
+            <Heart className="w-3.5 h-3.5 text-rose-400 fill-rose-400 animate-pulse" />
+          </div>
         </div>
 
         {/* Bottom controls */}
-        <div className="flex items-center gap-6 text-xs text-ivory/50 font-mono tracking-wider pt-4 border-t border-champagne/10 w-full justify-between">
-          <span>&copy; {new Date().getFullYear()} • Dedicated to {targetName}</span>
+        <div className="flex flex-col sm:flex-row items-center gap-4 text-xs text-ivory/50 font-mono tracking-wider pt-4 border-t border-champagne/10 w-full justify-between">
+          <span>&copy; {new Date().getFullYear()} • Developed by Naveen • Dedicated to {targetName}</span>
           
           <div className="flex items-center gap-4">
             <button

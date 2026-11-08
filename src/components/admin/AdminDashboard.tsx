@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { SiteContent, AdminUser, ProposalResponseRecord } from '../../types';
-import { saveSiteContent, logoutAdmin, getProposalResponses } from '../../firebase/services';
+import { saveSiteContent, logoutAdmin, getProposalResponses, clearProposalResponses } from '../../firebase/services';
 import { isFirebaseConfigured } from '../../firebase/config';
 import { PhotoManager } from './PhotoManager';
 import { ContentEditor } from './ContentEditor';
@@ -21,7 +21,11 @@ import {
   CheckCircle,
   Clock,
   Sparkles,
-  ArrowRight
+  ArrowRight,
+  Download,
+  Trash2,
+  Copy,
+  Check
 } from 'lucide-react';
 
 interface AdminDashboardProps {
@@ -44,12 +48,41 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [responses, setResponses] = useState<ProposalResponseRecord[]>([]);
+  const [copiedLink, setCopiedLink] = useState(false);
 
   useEffect(() => {
     getProposalResponses().then((res) => {
       setResponses(res);
     });
   }, []);
+
+  const handleCopyWebsiteLink = () => {
+    const origin = window.location.origin;
+    navigator.clipboard.writeText(origin);
+    setCopiedLink(true);
+    setTimeout(() => setCopiedLink(false), 3000);
+  };
+
+  const handleExportResponses = () => {
+    if (responses.length === 0) {
+      alert("No responses to export yet!");
+      return;
+    }
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(responses, null, 2));
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", `haseena_proposal_responses_${Date.now()}.json`);
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+  };
+
+  const handleClearResponses = async () => {
+    if (confirm("Are you sure you want to clear the logged test responses? This will reset the responses list for Haseena.")) {
+      await clearProposalResponses();
+      setResponses([]);
+    }
+  };
 
   const handleSave = async () => {
     setIsSaving(true);

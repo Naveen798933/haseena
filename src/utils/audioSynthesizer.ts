@@ -1,27 +1,30 @@
 /**
- * Romantic Piano Synthesizer
+ * Romantic Piano & Ambient Soundscape Synthesizer
  * Generates an ethereal, delicate romantic piano nocturne in pure Web Audio API.
- * Uses soft harmonics, lowpass filtering, and gentle arpeggiated piano chords.
+ * Features 3 selectable romantic moods:
+ * 1. 'piano': Nocturne in Champagne (Pure acoustic piano solo)
+ * 2. 'rain': Rain on Rose Petals & Piano (Soft rain ambient sound layered with piano)
+ * 3. 'starlight': Midnight Reverie (Slow atmospheric ethereal chords)
  */
+
+export type SoundMood = 'piano' | 'rain' | 'starlight';
 
 class RomanticPianoPlayer {
   private ctx: AudioContext | null = null;
   private isPlaying = false;
   private timer: number | null = null;
   private masterGain: GainNode | null = null;
-  private volume = 0.6;
+  private rainNode: AudioNode | null = null;
+  private rainGain: GainNode | null = null;
+  private volume = 0.65;
   private noteIndex = 0;
+  private currentMood: SoundMood = 'piano';
 
-  // Gentle romantic progression (notes in Hz)
   // Chords: Dbmaj9, Bbm9, Gbmaj7, Abadd9
   private chordProgression = [
-    // Dbmaj9: Db3, F3, Ab3, C4, Eb4
     [138.59, 174.61, 207.65, 261.63, 311.13],
-    // Bbm9: Bb2, Db3, F3, Ab3, C4
     [116.54, 138.59, 174.61, 207.65, 261.63],
-    // Gbmaj7: Gb2, Bb2, Db3, F3, Ab3
     [92.50, 116.54, 138.59, 174.61, 207.65],
-    // Abadd9: Ab2, C3, Eb3, Ab3, Bb3
     [103.83, 130.81, 155.56, 207.65, 233.08],
   ];
 
@@ -45,6 +48,50 @@ class RomanticPianoPlayer {
     }
   }
 
+  private startRainNoise() {
+    if (!this.ctx || !this.masterGain || this.rainNode) return;
+
+    // Synthesize gentle pink/brown rain noise using buffer
+    const bufferSize = this.ctx.sampleRate * 2;
+    const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
+    let lastOut = 0.0;
+    for (let i = 0; i < bufferSize; i++) {
+      const white = Math.random() * 2 - 1;
+      output[i] = (lastOut + 0.02 * white) / 1.02;
+      lastOut = output[i];
+      output[i] *= 0.15;
+    }
+
+    const whiteNoise = this.ctx.createBufferSource();
+    whiteNoise.buffer = noiseBuffer;
+    whiteNoise.loop = true;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.value = 900;
+
+    this.rainGain = this.ctx.createGain();
+    this.rainGain.gain.value = 0.08;
+
+    whiteNoise.connect(filter);
+    filter.connect(this.rainGain);
+    this.rainGain.connect(this.masterGain);
+
+    whiteNoise.start();
+    this.rainNode = whiteNoise;
+  }
+
+  private stopRainNoise() {
+    if (this.rainNode) {
+      try {
+        (this.rainNode as AudioBufferSourceNode).stop();
+        this.rainNode.disconnect();
+      } catch {}
+      this.rainNode = null;
+    }
+  }
+
   private playPianoNote(freq: number, duration: number, velocity = 0.5) {
     if (!this.ctx || !this.masterGain) return;
 
@@ -58,17 +105,18 @@ class RomanticPianoPlayer {
     // Warm overtone oscillator (triangle)
     const osc2 = this.ctx.createOscillator();
     osc2.type = 'triangle';
-    osc2.frequency.setValueAtTime(freq * 2, now);
+    osc2.frequency.setValueAtTime(this.currentMood === 'starlight' ? freq * 1.5 : freq * 2, now);
 
     // Filter to simulate warm wooden soundboard
     const filter = this.ctx.createBiquadFilter();
     filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(1200, now);
-    filter.frequency.exponentialRampToValueAtTime(300, now + duration);
+    const cutoff = this.currentMood === 'starlight' ? 700 : 1200;
+    filter.frequency.setValueAtTime(cutoff, now);
+    filter.frequency.exponentialRampToValueAtTime(250, now + duration);
 
     // Note envelope
     const noteGain = this.ctx.createGain();
-    const peakGain = velocity * 0.25;
+    const peakGain = velocity * (this.currentMood === 'starlight' ? 0.18 : 0.25);
     noteGain.gain.setValueAtTime(0.0001, now);
     noteGain.gain.linearRampToValueAtTime(peakGain, now + 0.04);
     noteGain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
@@ -84,12 +132,33 @@ class RomanticPianoPlayer {
     osc2.stop(now + duration);
   }
 
+  public setMood(mood: SoundMood) {
+    this.currentMood = mood;
+    if (this.isPlaying) {
+      if (mood === 'rain') {
+        this.startRainNoise();
+      } else {
+        this.stopRainNoise();
+      }
+    }
+  }
+
+  public getMood(): SoundMood {
+    return this.currentMood;
+  }
+
   public start() {
     if (this.isPlaying) return;
     this.initContext();
     this.isPlaying = true;
 
+    if (this.currentMood === 'rain') {
+      this.startRainNoise();
+    }
+
     let step = 0;
+    const tempo = this.currentMood === 'starlight' ? 900 : 700;
+
     const tick = () => {
       if (!this.isPlaying) return;
 
@@ -98,22 +167,22 @@ class RomanticPianoPlayer {
 
       // Bass note on downbeat
       if (step % 8 === 0) {
-        this.playPianoNote(currentChord[0], 3.8, 0.45);
+        this.playPianoNote(currentChord[0], 4.2, 0.45);
       }
 
       // Arpeggiated soft accompaniment
       const chordTone = currentChord[(step % (currentChord.length - 1)) + 1];
-      this.playPianoNote(chordTone, 2.2, 0.25);
+      this.playPianoNote(chordTone, 2.5, 0.22);
 
       // Delicate high romantic melody note
       if (step % 2 === 0) {
         const melNote = this.melodyNotes[this.noteIndex % this.melodyNotes.length];
-        this.playPianoNote(melNote, 2.6, 0.35);
+        this.playPianoNote(melNote, 2.8, 0.32);
         this.noteIndex++;
       }
 
       step++;
-      this.timer = window.setTimeout(tick, 700);
+      this.timer = window.setTimeout(tick, tempo);
     };
 
     tick();
@@ -125,6 +194,7 @@ class RomanticPianoPlayer {
       clearTimeout(this.timer);
       this.timer = null;
     }
+    this.stopRainNoise();
   }
 
   public setVolume(val: number) {
@@ -140,4 +210,3 @@ class RomanticPianoPlayer {
 }
 
 export const romanticPiano = new RomanticPianoPlayer();
-

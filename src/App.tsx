@@ -8,12 +8,14 @@ import { HeroSection } from './components/HeroSection';
 import { GallerySection } from './components/GallerySection';
 import { SupercarsSection } from './components/SupercarsSection';
 import { StorySection } from './components/StorySection';
+import { LittleThingsSection } from './components/LittleThingsSection';
 import { SecretLetterSection } from './components/SecretLetterSection';
 import { ProposalSection } from './components/ProposalSection';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { AudioPlayer } from './components/AudioPlayer';
 import { PetalCanvas } from './components/PetalCanvas';
+import { ShootingStars } from './components/ShootingStars';
 import { ClickHeartParticles } from './components/ClickHeartParticles';
 import { CustomCursor } from './components/CustomCursor';
 import { AdminLoginModal } from './components/admin/AdminLoginModal';
@@ -101,6 +103,9 @@ export const App: React.FC = () => {
       {/* Rose Petal & Golden Dust Particle Simulation */}
       <PetalCanvas density={content.theme?.petalCount || 28} />
 
+      {/* Occasional Shooting Stars in the Night Sky */}
+      <ShootingStars />
+
       {/* Interactive Tap & Click Golden Stars & Rose Hearts */}
       <ClickHeartParticles />
 
@@ -152,6 +157,9 @@ export const App: React.FC = () => {
           heading={content.story.heading}
           sentences={content.story.sentences}
         />
+
+        {/* Why Haseena — Little Things I Adore */}
+        <LittleThingsSection />
 
         {/* The Secret Letter Section */}
         <SecretLetterSection

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Volume2, VolumeX, Play, Pause, Music, Sliders } from 'lucide-react';
+import { Volume2, VolumeX, Play, Pause, Music, Sparkles, CloudRain, Moon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { romanticPiano } from '../utils/audioSynthesizer';
+import { romanticPiano, SoundMood } from '../utils/audioSynthesizer';
 
 interface AudioPlayerProps {
   musicUrl?: string;
@@ -19,8 +19,20 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.65);
   const [isMuted, setIsMuted] = useState(false);
-  const [showVolumeSlider, setShowVolumeSlider] = useState(false);
+  const [showControls, setShowControls] = useState(false);
+  const [currentMood, setCurrentMood] = useState<SoundMood>('piano');
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const moodNames: Record<SoundMood, { name: string; icon: React.FC<{ className?: string }> }> = {
+    piano: { name: 'Piano Nocturne', icon: Sparkles },
+    rain: { name: 'Rain & Piano', icon: CloudRain },
+    starlight: { name: 'Midnight Starlight', icon: Moon }
+  };
+
+  const handleSelectMood = (mood: SoundMood) => {
+    setCurrentMood(mood);
+    romanticPiano.setMood(mood);
+  };
 
   // Synchronize audio volume
   useEffect(() => {
@@ -144,10 +156,10 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
             {/* Volume Toggle */}
             <div className="relative flex items-center">
               <button
-                onClick={() => setShowVolumeSlider(!showVolumeSlider)}
+                onClick={() => setShowControls(!showControls)}
                 className="p-1.5 rounded-full hover:bg-wine/40 text-champagne/80 hover:text-champagne transition-colors"
-                title="Adjust volume"
-                aria-label="Adjust volume"
+                title="Adjust volume & soundscape moods"
+                aria-label="Adjust volume & soundscape moods"
               >
                 {isMuted || volume === 0 ? (
                   <VolumeX className="w-4 h-4" />
@@ -156,30 +168,58 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
                 )}
               </button>
 
-              {/* Volume Slider Flyout */}
+              {/* Volume Slider & Soundscape Moods Flyout */}
               <AnimatePresence>
-                {showVolumeSlider && (
+                {showControls && (
                   <motion.div
                     initial={{ opacity: 0, scale: 0.9, y: 10 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.9, y: 10 }}
-                    className="absolute bottom-12 right-0 p-3 rounded-2xl bg-burgundy-900/95 backdrop-blur-xl border border-champagne/30 shadow-2xl flex flex-col items-center gap-2"
+                    className="absolute bottom-12 right-0 p-4 rounded-2xl bg-burgundy-900/95 backdrop-blur-xl border border-champagne/30 shadow-2xl flex flex-col gap-3 min-w-[210px]"
                   >
-                    <input
-                      type="range"
-                      min="0"
-                      max="1"
-                      step="0.05"
-                      value={isMuted ? 0 : volume}
-                      onChange={handleVolumeChange}
-                      className="w-24 h-1 bg-burgundy-800 rounded-lg appearance-none cursor-pointer accent-champagne"
-                    />
-                    <div className="flex justify-between w-full text-[10px] text-champagne/70 px-1 font-mono">
-                      <button onClick={toggleMute} className="hover:text-champagne">
-                        {isMuted ? "Unmute" : "Mute"}
-                      </button>
-                      <span>{Math.round((isMuted ? 0 : volume) * 100)}%</span>
+                    <div>
+                      <div className="flex justify-between w-full text-[10px] text-champagne/80 font-mono mb-1">
+                        <span className="uppercase">Volume</span>
+                        <span>{Math.round((isMuted ? 0 : volume) * 100)}%</span>
+                      </div>
+                      <input
+                        type="range"
+                        min="0"
+                        max="1"
+                        step="0.05"
+                        value={isMuted ? 0 : volume}
+                        onChange={handleVolumeChange}
+                        className="w-full h-1 bg-burgundy-800 rounded-lg appearance-none cursor-pointer accent-champagne"
+                      />
                     </div>
+
+                    {!musicUrl && (
+                      <div className="pt-2 border-t border-champagne/20">
+                        <span className="block text-[9px] uppercase tracking-wider text-champagne/70 font-mono mb-2">
+                          Soundscape Mood
+                        </span>
+                        <div className="flex flex-col gap-1.5">
+                          {(['piano', 'rain', 'starlight'] as SoundMood[]).map((m) => {
+                            const MoodIcon = moodNames[m].icon;
+                            const isSelected = currentMood === m;
+                            return (
+                              <button
+                                key={m}
+                                onClick={() => handleSelectMood(m)}
+                                className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-mono transition-colors text-left ${
+                                  isSelected
+                                    ? 'bg-wine text-champagne border border-champagne/50'
+                                    : 'text-ivory/70 hover:bg-burgundy-950 hover:text-champagne'
+                                }`}
+                              >
+                                <MoodIcon className="w-3.5 h-3.5 shrink-0" />
+                                <span>{moodNames[m].name}</span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
                   </motion.div>
                 )}
               </AnimatePresence>

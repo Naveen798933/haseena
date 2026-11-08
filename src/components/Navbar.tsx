@@ -23,6 +23,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin, title = "A Little W
     { name: 'Six Moments', href: '#gallery' },
     { name: 'Midnight Drives', href: '#supercars' },
     { name: 'Our Story', href: '#story' },
+    { name: 'Why Haseena', href: '#little-things' },
     { name: 'The Letter', href: '#letter' },
     { name: 'For Haseena', href: '#proposal' },
   ];
